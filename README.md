@@ -1,6 +1,6 @@
 # DMD Telegram Bot
 
-This repository is an extracted Laravel application focused on DMD validator monitoring and Telegram notifications.
+This repository contains a Laravel application focused on DMD validator monitoring and Telegram notifications.
 
 Included functionality:
 
@@ -8,13 +8,6 @@ Included functionality:
 - DMD chain freshness sync from the RPC endpoint
 - Telegram webhook handling and slash-command processing
 - Telegram notification queueing for pool and epoch updates
-
-Excluded functionality:
-
-- Vision syncs
-- Rewards distribution syncs
-- Asset and fiat syncs
-- Extra API endpoints unrelated to DMD and Telegram
 
 ## Docker Run
 
