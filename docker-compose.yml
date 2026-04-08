@@ -1,0 +1,35 @@
+services:
+  app:
+    build:
+      context: .
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/var/www/html
+    command: ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+
+  worker:
+    build:
+      context: .
+    env_file:
+      - .env
+    volumes:
+      - .:/var/www/html
+    command: ["php", "artisan", "queue:work", "--queue=telegram,default", "--tries=5", "--timeout=120"]
+
+  scheduler:
+    build:
+      context: .
+    env_file:
+      - .env
+    volumes:
+      - .:/var/www/html
+    command:
+      [
+        "sh",
+        "-lc",
+        "while true; do php artisan schedule:run --no-interaction; sleep 60; done"
+      ]
+
