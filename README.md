@@ -30,6 +30,29 @@ The compose stack starts:
 
 On startup, the container will install Composer dependencies if needed, create the SQLite database file, generate `APP_KEY`, and run migrations automatically.
 
+## First Telegram Setup
+
+The first Docker startup prepares the Laravel app and database, but it does not register the Telegram webhook automatically.
+
+Before Telegram can work, set these values in `.env`:
+
+- `TELEGRAM_BOT_TOKEN`
+- `TELEGRAM_WEBHOOK_SECRET`
+- `APP_URL` or your public webhook base URL
+
+After the containers are running, register the webhook manually:
+
+```bash
+docker compose exec app php artisan app:set-telegram-webhook https://your-domain.example/telegram/webhook
+```
+
+You can also run other Laravel commands through Docker, for example:
+
+```bash
+docker compose exec app php artisan app:sync-dmd-state
+docker compose exec app php artisan app:sync-dmd-chain-status
+```
+
 ## Local Non-Docker Setup
 
 1. Install PHP dependencies with `composer install`.
