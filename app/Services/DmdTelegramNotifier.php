@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Jobs\SendTelegramNotificationJob;
+use App\Models\DmdPool;
 use App\Models\TelegramChat;
 use App\Models\TelegramPoolSubscription;
 use Illuminate\Support\Str;
@@ -104,6 +105,9 @@ class DmdTelegramNotifier
             ->where('is_active', true)
             ->where('wants_epoch_notifications', true)
             ->get();
+        $activeValidators = DmdPool::query()
+            ->where('is_active', true)
+            ->count();
 
         $dispatchIndex = 0;
         foreach ($chats as $chat) {
@@ -119,6 +123,7 @@ class DmdTelegramNotifier
             $messageLines = array_merge($messageLines, [
                 'Current epoch: ' . $change['current']['staking_epoch'],
                 'Keygen round: ' . $change['current']['keygen_round'],
+                'Active validators: ' . $activeValidators,
                 'Stake/withdraw allowed: ' . ($change['current']['are_stake_and_withdraw_allowed'] ? 'yes' : 'no'),
                 'Epoch start block: ' . $change['current']['staking_epoch_start_block'],
                 'Epoch start time: ' . $this->formatUnixTimestamp($change['current']['staking_epoch_start_time']),
